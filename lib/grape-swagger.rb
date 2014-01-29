@@ -225,6 +225,7 @@ module Grape
 
                 {
                   paramType:    paramType,
+                  dataType:     dataType,
                   name:         param,
                   description:  as_markdown(description),
                   type:         dataType,
