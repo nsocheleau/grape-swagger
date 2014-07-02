@@ -127,7 +127,11 @@ module Grape
                 notes       = as_markdown(route.route_notes)
                 http_codes  = parse_http_codes(route.route_http_codes)
 
-                models << route.route_entity if route.route_entity
+                if route.route_entity
+                  entity = route.route_entity 
+                  models << entity
+                  models += entity.exposures.collect{|e| e[1][:using]}.compact
+                end
 
                 operations = {
                   :produces   => content_types_for(target_class),
