@@ -132,7 +132,7 @@ module Grape
                   entities_to_add = [entity]
                   while entities_to_add.size > 0
                     models += entities_to_add
-                    entities_to_add = entity.exposures.collect{|e| e[1][:using]}.compact
+                    entities_to_add = entities_to_add.collect{|entity| entity.exposures.collect{|e| e[1][:using]}.compact }.flatten
                   end
                 end
 
