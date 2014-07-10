@@ -129,8 +129,11 @@ module Grape
 
                 if route.route_entity
                   entity = route.route_entity 
-                  models << entity
-                  models += entity.exposures.collect{|e| e[1][:using]}.compact
+                  entities_to_add = [entity]
+                  while entities_to_add.size > 0
+                    models += entities_to_add
+                    entities_to_add = entity.exposures.collect{|e| e[1][:using]}.compact
+                  end
                 end
 
                 operations = {
@@ -259,6 +262,9 @@ module Grape
                 properties  = {}
 
                 model.documentation.each do |property_name, property_info|
+                  # check the exposure for a 'as'
+                  property_as = model.exposures[property_name][:as]
+                  property_name = property_as.to_s if property_as
                   properties[property_name] = property_info
 
                   # rename Grape Entity's "desc" to "description"
